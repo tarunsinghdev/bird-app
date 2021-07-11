@@ -1,11 +1,8 @@
 {
   "name": "bird-app",
   "version": "1.0.0",
-<<<<<<< HEAD
-  "description": "A Twitter clon",
-=======
+
   "description": "A Twitter clone",
->>>>>>> 009a91cd1d16066c9774209e2e03d40a30ca2ef9
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
