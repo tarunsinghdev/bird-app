@@ -1,0 +1,27 @@
+{
+  "name": "bird-app",
+  "version": "1.0.0",
+  "description": "A Twitter clone",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tarunsinghdev/bird-app.git"
+  },
+  "keywords": [
+    "bird-app",
+    "twitter",
+    "clone"
+  ],
+  "author": "Tarun Singh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tarunsinghdev/bird-app/issues"
+  },
+  "homepage": "https://github.com/tarunsinghdev/bird-app#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
