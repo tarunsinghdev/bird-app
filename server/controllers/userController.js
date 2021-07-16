@@ -1,6 +1,6 @@
-const User = require('../models/user');
+import User from '../models/userModal';
 
-exports.getUserById = (req, res, next) => {
+export const getUserById = (req, res, next) => {
   User.findById(req.params.userId).exec((err, user) => {
     if (err || !user) {
       return res.status(400).json({
