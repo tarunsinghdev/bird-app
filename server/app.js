@@ -11,6 +11,7 @@ import messageRoutes from './routes/messageRoutes';
 const app = express();
 
 //Middlewares
+app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
