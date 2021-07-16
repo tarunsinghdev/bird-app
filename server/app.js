@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
@@ -12,7 +11,6 @@ import messageRoutes from './routes/messageRoutes';
 const app = express();
 
 //Middlewares
-app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 
