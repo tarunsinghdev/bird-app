@@ -1,9 +1,15 @@
 import User from '../models/userModal.js';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
+import { validationResult } from 'express-validator';
 const saltRounds = 10;
 
 export const signup = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
     req.body.password = hash;
     const user = new User(req.body);
@@ -22,15 +28,20 @@ export const signup = (req, res) => {
 };
 
 export const signin = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   const { email, password } = req.body;
   User.findOne({ email }, (err, user) => {
     if (err || !user) {
       return res.status(400).json({
-        error: "Email doesn't exist",
+        error: err,
       });
     }
 
-    bcrypt.compare(password, hash, function (err, result) {
+    bcrypt.compare(password, user.password, function (err, result) {
       if (result == false) {
         return res
           .status(401)
