@@ -3,9 +3,9 @@
   "name": "bird-app",
   "version": "1.0.0",
   "description": "A Twitter clone",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon server/index.js"
+    "start": "nodemon server"
   },
   "repository": {
     "type": "git",
@@ -16,18 +16,20 @@
     "twitter",
     "clone"
   ],
-  "author": "Tarun Singh",
+  "author": "Tarun Singh & Yogesh Yadav",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/tarunsinghdev/bird-app/issues"
   },
   "homepage": "https://github.com/tarunsinghdev/bird-app#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "express-validator": "^6.2.0",
-    "mongoose": "^5.13.2"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.2",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
     "colors": "^1.4.0",

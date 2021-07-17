@@ -1,4 +1,4 @@
-import User from '../models/userModal';
+import User from '../models/userModal.js';
 
 export const getUserById = (req, res, next) => {
   User.findById(req.params.userId).exec((err, user) => {
