@@ -1,71 +1,57 @@
 import User from '../models/userModal.js';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import { validationResult } from 'express-validator';
-const saltRounds = 10;
+import { generateToken } from '../utils/generateToken.js';
 
-export const signup = (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
+export const signup = async (req, res, next) => {
+  try {
+    const newUser = await User.create(req.body);
+    const token = generateToken(newUser._id);
 
-  bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
-    req.body.password = hash;
-    const user = new User(req.body);
-    user.save((err, user) => {
-      if (err) {
-        return res.status(400).json({
-          error: 'Not able to save user in DB',
-        });
-      }
-      res.json({
-        firstName: user.firstName,
-        id: user._id,
-      });
+    res.cookie('token', token, {
+      expire: new Date() + process.env.COOKIE_EXPIRES_IN,
+      httpOnly: true,
     });
-  });
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        user: newUser,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({ status: 'fail', message: error });
+  }
 };
 
-export const signin = (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-
+export const signin = async (req, res, next) => {
   const { email, password } = req.body;
-  User.findOne({ email }, (err, user) => {
-    if (err || !user) {
-      return res.status(400).json({
-        error: err,
-      });
+  try {
+    if (!email || !password) throw Error("Fields can't be empty");
+
+    const user = await User.findOne({ email });
+
+    if (!user || !(await user.matchPassword(password, user.password))) {
+      throw Error('Incorrect email or password');
     }
 
-    bcrypt.compare(password, user.password, function (err, result) {
-      if (result == false) {
-        return res
-          .status(401)
-          .json({ error: "Email and password doesn't match" });
-      }
-      if (result == true) {
-        //create token using user's id
-        const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+    const token = generateToken(user._id);
 
-        //store token in browser cookie
-        res.cookie('token', token, { expire: new Date() + 9999 });
-
-        //sending response to frontend
-        const { _id, firstName, lastName, username, email } = user;
-        res.json({
-          token,
-          user: { _id, firstName, lastName, username, email },
-        });
-      }
+    res.cookie('token', token, {
+      expire: new Date() + process.env.COOKIE_EXPIRES_IN,
+      httpOnly: true,
     });
-  });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({ status: 'fail', message: error.message });
+  }
 };
 
 export const signout = (req, res) => {
-  res.clearCookie('token'); //method comes from cookie-parser
-  res.json({ message: 'user signout succesfully' });
+  res.clearCookie('token', { httpOnly: true });
+  res.status(200).json({ message: 'User Signed out succesfully' });
 };
