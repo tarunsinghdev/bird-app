@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+const saltRounds = 10;
 
 const Schema = mongoose.Schema;
 
@@ -30,6 +32,18 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
+
+userSchema.methods.matchPassword = async function (plainpassword) {
+  return await bcrypt.compare(plainpassword, this.password);
+};
+
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
+    next();
+  }
+  this.password = await bcrypt.hash(this.password, saltRounds);
+  next();
+});
 
 const User = mongoose.model('User', userSchema);
 
