@@ -1,5 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import User from '../models/userModal.js';
 import jwt from 'jsonwebtoken';
+import expressJWT from 'express-jwt';
 import { validationResult } from 'express-validator';
 
 export const signup = (req, res) => {
@@ -59,4 +63,22 @@ export const signin = (req, res) => {
 export const signout = (req, res) => {
   res.clearCookie('token'); //method comes from cookie-parser
   res.json({ message: 'user signout succesfully' });
+};
+
+//protected routes
+export const isSignIn = expressJWT({
+  secret: process.env.TOKEN_SECRET,
+  algorithms: ['HS256'],
+  userProperty: 'auth',
+});
+
+//custom middlewares
+export const isAuthenticated = (req, res, next) => {
+  let checker = req.profile && req.auth && req.profile._id == req.auth._id;
+  if (!checker) {
+    return res.status(403).json({
+      error: 'ACCESS DENIED',
+    });
+  }
+  next();
 };
