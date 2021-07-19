@@ -18,6 +18,14 @@ const RegisterScreen: React.FC = () => {
           <Formik
             initialValues={{ userName: '', email: '', password: '' }}
             validationSchema={Yup.object({
+              firstName: Yup.string()
+                .min(5, 'Must be 5 characters or more')
+                .trim()
+                .required(),
+              lastName: Yup.string()
+                .min(5, 'Must be 5 characters or more')
+                .trim()
+                .required(),
               userName: Yup.string()
                 .min(5, 'Must be 5 characters or more')
                 .trim()
@@ -39,6 +47,8 @@ const RegisterScreen: React.FC = () => {
             })}
             onSubmit={async (values, { setSubmitting, setErrors }) => {
               try {
+                console.log(values);
+                // axios.post('/api/signup');
                 alert('Form Submitted!');
               } catch (error) {
                 console.log('Error');
@@ -47,6 +57,22 @@ const RegisterScreen: React.FC = () => {
           >
             {({ isSubmitting, isValid, dirty, errors }) => (
               <Form>
+                <Row>
+                  <Col>
+                    <MyTextInput
+                      label="Firstname"
+                      name="firstName"
+                      placeholder="Firstname"
+                    />
+                  </Col>
+                  <Col>
+                    <MyTextInput
+                      label="Lastname"
+                      name="lastName"
+                      placeholder="Lastname"
+                    />
+                  </Col>
+                </Row>
                 <MyTextInput
                   label="Username"
                   name="userName"
