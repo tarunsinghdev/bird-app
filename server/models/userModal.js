@@ -30,6 +30,8 @@ const userSchema = new Schema(
       unique: true,
     },
     password: { type: String, required: [true, 'Email or Password Incorrect'] },
+    following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   },
   { timestamps: true }
 );
