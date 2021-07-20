@@ -16,7 +16,7 @@ const userSchema = new Schema(
       required: [true, 'Please enter your last name'],
       trim: true,
     },
-    username: {
+    userName: {
       type: String,
       required: [true, "Username can't be empty"],
       trim: true,
@@ -30,8 +30,8 @@ const userSchema = new Schema(
       unique: true,
     },
     password: { type: String, required: [true, 'Email or Password Incorrect'] },
-    following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    following: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
+    followers: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
   },
   { timestamps: true }
 );
