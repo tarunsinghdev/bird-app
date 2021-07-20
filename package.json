@@ -5,7 +5,9 @@
   "description": "A Twitter clone",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server"
+    "start": "nodemon server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client"
   },
   "repository": {
     "type": "git",
