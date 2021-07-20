@@ -15,7 +15,7 @@ export const signup = (req, res) => {
   user.save((err, user) => {
     if (err) {
       return res.status(400).json({
-        error: 'Not able to save user in DB',
+        error: err,
       });
     }
     res.json({
@@ -52,10 +52,32 @@ export const signin = (req, res) => {
     res.cookie('token', token, { expire: new Date() + 9999 });
 
     //sending response to frontend
-    const { _id, firstName, lastName, username, email } = user;
+    const {
+      _id,
+      firstName,
+      lastName,
+      username,
+      email,
+      profilePic,
+      likes,
+      retweets,
+      following,
+      followers,
+    } = user;
     res.json({
       token,
-      user: { _id, firstName, lastName, username, email },
+      user: {
+        _id,
+        firstName,
+        lastName,
+        username,
+        email,
+        profilePic,
+        likes,
+        retweets,
+        following,
+        followers,
+      },
     });
   });
 };
