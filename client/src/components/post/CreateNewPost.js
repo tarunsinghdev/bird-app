@@ -1,6 +1,9 @@
 import React from 'react';
+import { createPost } from '../../helper/post/index';
+import { isAuthenticated } from '../../helper/auth/index';
 
 export default function CreateNewPost() {
+  const { user, token } = isAuthenticated();
   const disableText = (event) => {
     let bt = document.getElementById('submitPostButton');
     if (event.target.value.trim() !== '') {
@@ -12,7 +15,17 @@ export default function CreateNewPost() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    //TODO : implement logic
+    const tweet = event.target.value;
+    //backend request fired
+    createPost(user._id, token, { tweet }).then((data) => {
+      if (data.error) {
+        //setError(true);
+      } else {
+        //setError('');
+        //setSuccess(true);
+        //setcontent empty and button disabled
+      }
+    });
   };
 
   return (
