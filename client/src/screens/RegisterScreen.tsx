@@ -1,6 +1,7 @@
 import { Formik, Form } from 'formik';
 import { Button, Col, Container, Image, Row, Spinner } from 'react-bootstrap';
 import * as Yup from 'yup';
+import { signup } from '../helper/auth/index';
 
 import MyTextInput from '../components/form/MyTextInput';
 import SocialLogin from '../components/form/SocialLogin/SocialLogin';
@@ -16,9 +17,24 @@ const RegisterScreen: React.FC = () => {
           />
           <h2>Create your account</h2>
           <Formik
-            initialValues={{ userName: '', email: '', password: '' }}
+            initialValues={{
+              firstName: '',
+              lastName: '',
+              username: '',
+              email: '',
+              password: '',
+              confirmPassword: '',
+            }}
             validationSchema={Yup.object({
-              userName: Yup.string()
+              firstName: Yup.string()
+                .min(5, 'Must be 5 characters or more')
+                .trim()
+                .required(),
+              lastName: Yup.string()
+                .min(5, 'Must be 5 characters or more')
+                .trim()
+                .required(),
+              username: Yup.string()
                 .min(5, 'Must be 5 characters or more')
                 .trim()
                 .required(),
@@ -38,18 +54,45 @@ const RegisterScreen: React.FC = () => {
                 .required(),
             })}
             onSubmit={async (values, { setSubmitting, setErrors }) => {
-              try {
-                alert('Form Submitted!');
-              } catch (error) {
-                console.log('Error');
+              const { firstName, lastName, username, email, password } = values;
+              const res = await signup({
+                firstName,
+                lastName,
+                username,
+                email,
+                password,
+              });
+              console.log(res);
+              if (res.error && res.error.keypattern.username === 1) {
+                //TODO: set ERROR username is already exists
               }
+              if (res.error && res.error.keypattern.email === 1) {
+                //TODO: set ERROR email is already exists please login
+              }
+              //TODO: if no error set input field to empty and show success message
             }}
           >
             {({ isSubmitting, isValid, dirty, errors }) => (
               <Form>
+                <Row>
+                  <Col>
+                    <MyTextInput
+                      label="Firstname"
+                      name="firstName"
+                      placeholder="Firstname"
+                    />
+                  </Col>
+                  <Col>
+                    <MyTextInput
+                      label="Lastname"
+                      name="lastName"
+                      placeholder="Lastname"
+                    />
+                  </Col>
+                </Row>
                 <MyTextInput
                   label="Username"
-                  name="userName"
+                  name="username"
                   placeholder="Username"
                 />
                 <MyTextInput
