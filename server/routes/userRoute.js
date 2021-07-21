@@ -9,6 +9,6 @@ const router = express.Router();
 
 // router.get('/user/:userId', isSignIn, getUserById, isAuthenticated, getUser);
 
-router.get('/login', getUserById);
+// router.get('/login', getUserById);
 
 export default router;

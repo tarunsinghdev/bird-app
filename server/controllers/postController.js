@@ -22,3 +22,14 @@ export const createPost = (req, res, next) => {
       res.sendStatus(400);
     });
 };
+
+export const getAllPosts = (req, res, next) => {
+  Post.find()
+    .populate('postedBy')
+    .sort({ createdAt: -1 })
+    .then((results) => res.status(200).send(results))
+    .catch((error) => {
+      console.log('error in getting all posts');
+      res.sendStatus(400);
+    });
+};
