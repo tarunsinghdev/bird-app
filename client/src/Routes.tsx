@@ -7,10 +7,12 @@ import LoginScreen from './screens/LoginScreen';
 import Home from './screens/HomeScreen';
 import Notification from './screens/NotificationScreen';
 import NotFound from './screens/NotFound';
+import { ToastContainer } from 'react-toastify';
 
 const App: React.FC = () => {
   return (
     <Router>
+      <ToastContainer position="bottom-right" hideProgressBar />
       <Switch>
         <Route path="/" exact component={LandingScreen} />
         <Route path="/login" component={LoginScreen} />

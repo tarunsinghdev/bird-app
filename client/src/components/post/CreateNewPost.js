@@ -2,18 +2,11 @@ import React, { useState } from 'react';
 import { createPost } from '../../helper/post/index';
 import { isAuthenticated } from '../../helper/auth/index';
 
+import { toast } from 'react-toastify';
+
 export default function CreateNewPost() {
   const [content, setContent] = useState('');
   const { user, token } = isAuthenticated();
-
-  const disableText = (event) => {
-    let bt = document.getElementById('submitPostButton');
-    if (event.target.value.trim() !== '') {
-      bt.disabled = false;
-    } else {
-      bt.disabled = true;
-    }
-  };
 
   const handleChange = (event) => {
     setContent(event.target.value);
@@ -25,6 +18,7 @@ export default function CreateNewPost() {
     createPost(user._id, token, { content }).then((data) => {
       if (data.error) {
         //setError(true);
+        toast.error('This is an error');
       } else {
         //setError('');
         //setSuccess(true);
@@ -40,17 +34,23 @@ export default function CreateNewPost() {
         <img src="/images/defaultProfilePic.jpg" alt="User's Profile Pic" />
       </div>
       <div className="textareaContainer">
-        <textarea
-          placeholder="what's happening?"
-          id="postTextArea"
-          onKeyUp={disableText}
-          onChange={handleChange}
-        ></textarea>
-        <div className="buttonContainer">
-          <button onClick={onSubmit} id="submitPostButton">
-            Post
-          </button>
-        </div>
+        <form onSubmit={onSubmit}>
+          <textarea
+            value={content}
+            placeholder="what's happening?"
+            id="postTextArea"
+            onChange={handleChange}
+          ></textarea>
+          <div className="buttonContainer">
+            <button
+              type="submit"
+              disabled={content === '' ? true : false}
+              id="submitPostButton"
+            >
+              Post
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { Button, Col, Container, Image, Row, Spinner } from 'react-bootstrap';
-import { signin, authenticate, isAuthenticated } from '../helper/auth/index';
-import { Redirect } from 'react-router-dom';
+import { signin, isAuthenticated, authenticate } from '../helper/auth/index';
+import { Redirect, useHistory } from 'react-router-dom';
 
 import MyTextInput from '../components/form/MyTextInput';
 import SocialLogin from '../components/form/SocialLogin/SocialLogin';
+import { toast } from 'react-toastify';
 
 const LoginScreen: React.FC = () => {
-  const [redirect, setRedirect] = useState(false);
-  const { user } = isAuthenticated();
+  const history = useHistory();
+
   const performRedirect = () => {
-    if (redirect) {
-      if (user) {
-        return <Redirect to="/home" />;
-      }
-      if (isAuthenticated()) {
-        return <Redirect to="/login" />;
-      }
+    const { user } = isAuthenticated();
+    if (user) {
+      return history.push('/home');
+    }
+    if (isAuthenticated()) {
+      return <Redirect to="/login" />;
     }
   };
 
@@ -33,7 +33,7 @@ const LoginScreen: React.FC = () => {
             />
             <h2>Log in to Twitter</h2>
             <Formik
-              initialValues={{ email: '', password: '' }}
+              initialValues={{ email: '', password: '', authError: '' }}
               validationSchema={Yup.object({
                 email: Yup.string()
                   .required()
@@ -47,19 +47,26 @@ const LoginScreen: React.FC = () => {
                   .required()
                   .trim(),
               })}
-              onSubmit={async (values, { setSubmitting, setErrors }) => {
-                signin(values)
-                  .then((data) => {
-                    console.log(data);
-                    if (data.error || data.errors) {
-                      //TODO
-                    } else {
-                      authenticate(data, () => {
-                        setRedirect(true);
-                      });
-                    }
-                  })
-                  .catch();
+              onSubmit={async (
+                values,
+                { setSubmitting, setErrors, resetForm }
+              ) => {
+                try {
+                  const response = await signin(values);
+                  const res = await response.json();
+                  console.log(res);
+                  if (res.error) {
+                    throw Error(res.error);
+                  }
+                  toast.success('Successfully signed in');
+                  authenticate(res);
+                  resetForm({});
+                  history.push('/home');
+                } catch (error) {
+                  setErrors({ authError: error.message });
+                } finally {
+                  setSubmitting(false);
+                }
               }}
             >
               {({ isSubmitting, isValid, dirty, errors }) => (
@@ -75,6 +82,9 @@ const LoginScreen: React.FC = () => {
                     placeholder="Password"
                     type="password"
                   />
+                  {errors.authError && (
+                    <p style={{ color: 'red' }}>{errors.authError}</p>
+                  )}
                   <Button
                     style={{ width: '100%', marginTop: 20 }}
                     disabled={!isValid || !dirty || isSubmitting}

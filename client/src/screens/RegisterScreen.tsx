@@ -1,13 +1,27 @@
 import { Formik, Form } from 'formik';
 import { Button, Col, Container, Image, Row, Spinner } from 'react-bootstrap';
 import * as Yup from 'yup';
-import { signup } from '../helper/auth/index';
+import { isAuthenticated, signup } from '../helper/auth/index';
 
 import MyTextInput from '../components/form/MyTextInput';
 import SocialLogin from '../components/form/SocialLogin/SocialLogin';
+import { toast } from 'react-toastify';
+import { Redirect, useHistory } from 'react-router-dom';
 
 const RegisterScreen: React.FC = () => {
-  return (
+  const history = useHistory();
+
+  const performRedirect = () => {
+    const { user } = isAuthenticated();
+    if (user) {
+      return history.push('/home');
+    }
+    if (isAuthenticated()) {
+      return <Redirect to="/login" />;
+    }
+  };
+
+  const signupForm = () => (
     <Container>
       <Row className="justify-content-md-center" style={{ height: '100vh' }}>
         <Col xs={12} lg={5}>
@@ -24,6 +38,7 @@ const RegisterScreen: React.FC = () => {
               email: '',
               password: '',
               confirmPassword: '',
+              authError: '',
             }}
             validationSchema={Yup.object({
               firstName: Yup.string()
@@ -53,23 +68,41 @@ const RegisterScreen: React.FC = () => {
                 .oneOf([Yup.ref('password'), null], 'Password do not match')
                 .required(),
             })}
-            onSubmit={async (values, { setSubmitting, setErrors }) => {
+            onSubmit={async (
+              values,
+              { setSubmitting, setErrors, resetForm }
+            ) => {
               const { firstName, lastName, username, email, password } = values;
-              const res = await signup({
-                firstName,
-                lastName,
-                username,
-                email,
-                password,
-              });
-              console.log(res);
-              if (res.error && res.error.keypattern.username === 1) {
-                //TODO: set ERROR username is already exists
+              try {
+                const response = await signup({
+                  firstName,
+                  lastName,
+                  username,
+                  email,
+                  password,
+                });
+                const res = await response.json();
+                console.log(res);
+                if (res.error && res.error.keyPattern.username === 1) {
+                  //TODO: set ERROR username is already exists
+                  throw Error('Username already exists');
+                }
+                if (res.error && res.error.keyPattern.email === 1) {
+                  //TODO: set ERROR email is already exists please login
+                  throw Error('Email already exists, please login');
+                }
+                //TODO: if no error set input field to empty and show success message
+                resetForm({});
+                toast.success('Registration success');
+              } catch (error) {
+                if (error.message.startsWith('E')) {
+                  setErrors({ email: error.message });
+                } else {
+                  setErrors({ username: error.message });
+                }
+              } finally {
+                setSubmitting(false);
               }
-              if (res.error && res.error.keypattern.email === 1) {
-                //TODO: set ERROR email is already exists please login
-              }
-              //TODO: if no error set input field to empty and show success message
             }}
           >
             {({ isSubmitting, isValid, dirty, errors }) => (
@@ -131,6 +164,13 @@ const RegisterScreen: React.FC = () => {
         </Col>
       </Row>
     </Container>
+  );
+
+  return (
+    <>
+      {performRedirect()}
+      {signupForm()}
+    </>
   );
 };
 

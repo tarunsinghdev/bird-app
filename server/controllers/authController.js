@@ -32,17 +32,15 @@ export const signin = (req, res) => {
   }
 
   const { email, password } = req.body;
-  User.findOne({ email }, (err, user) => {
+  User.findOne({ email }, async (err, user) => {
     if (err || !user) {
       return res.status(400).json({
-        error: err,
+        error: 'Incorrect Email or Password',
       });
     }
 
-    if (!user.matchPassword(password)) {
-      return res
-        .status(401)
-        .json({ error: "Email and password doesn't match" });
+    if (!(await user.matchPassword(password))) {
+      return res.status(401).json({ error: 'Incorrect Email or Password' });
     }
 
     //create token using user's id

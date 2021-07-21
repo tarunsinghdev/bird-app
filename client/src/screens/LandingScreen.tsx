@@ -2,9 +2,23 @@ import React from 'react';
 import { Button, Col, Container, Image, Row } from 'react-bootstrap';
 
 import { LinkContainer } from 'react-router-bootstrap';
+import { Redirect, useHistory } from 'react-router-dom';
+import { isAuthenticated } from '../helper/auth';
 
 const LandingScreen: React.FC = () => {
-  return (
+  const history = useHistory();
+
+  const performRedirect = () => {
+    const { user } = isAuthenticated();
+    if (user) {
+      return history.push('/home');
+    }
+    if (isAuthenticated()) {
+      return <Redirect to="/login" />;
+    }
+  };
+
+  const landingPage = () => (
     <Row style={{ height: '100vh' }} className="d-flex flex-xs-row-reverse ">
       <Col
         className="bg-primary d-flex flex-column justify-content-center "
@@ -43,6 +57,13 @@ const LandingScreen: React.FC = () => {
         </Container>
       </Col>
     </Row>
+  );
+
+  return (
+    <>
+      {performRedirect()}
+      {landingPage()}
+    </>
   );
 };
 

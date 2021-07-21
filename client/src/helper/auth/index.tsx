@@ -8,11 +8,11 @@ export const signup = (user: {}) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(user),
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .catch((err) => console.log('ERROR', err));
+  });
+  // .then((response) => {
+  //   return response.json();
+  // })
+  // .catch((err) => console.log('ERROR', err));
 };
 
 export const signin = (user: {}) => {
@@ -23,11 +23,11 @@ export const signin = (user: {}) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(user),
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .catch((err) => console.log(err));
+  });
+  // .then((response) => {
+  //   return response.json();
+  // })
+  // .catch((err) => console.log(err));
 };
 
 export const signout = (next: any) => {
@@ -41,10 +41,9 @@ export const signout = (next: any) => {
   }
 };
 
-export const authenticate = (data: any, next: any) => {
+export const authenticate = (data: any) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('jwt', JSON.stringify(data));
-    next();
   }
 };
 
