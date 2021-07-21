@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createPost } from '../../helper/post/index';
 import { isAuthenticated } from '../../helper/auth/index';
 
 export default function CreateNewPost() {
+  const [content, setContent] = useState('');
   const { user, token } = isAuthenticated();
+
   const disableText = (event) => {
     let bt = document.getElementById('submitPostButton');
     if (event.target.value.trim() !== '') {
@@ -13,17 +15,21 @@ export default function CreateNewPost() {
     }
   };
 
+  const handleChange = (event) => {
+    setContent(event.target.value);
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
-    const tweet = event.target.value;
     //backend request fired
-    createPost(user._id, token, { tweet }).then((data) => {
+    createPost(user._id, token, { content }).then((data) => {
       if (data.error) {
         //setError(true);
       } else {
         //setError('');
         //setSuccess(true);
         //setcontent empty and button disabled
+        setContent('');
       }
     });
   };
@@ -38,9 +44,10 @@ export default function CreateNewPost() {
           placeholder="what's happening?"
           id="postTextArea"
           onKeyUp={disableText}
+          onChange={handleChange}
         ></textarea>
         <div className="buttonContainer">
-          <button onClick={onSubmit} id="submitPostButton" disabled>
+          <button onClick={onSubmit} id="submitPostButton">
             Post
           </button>
         </div>

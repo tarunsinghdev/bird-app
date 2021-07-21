@@ -15,3 +15,13 @@ export const createPost = (userId, token, post) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const getAllPosts = () => {
+  return fetch(`${API}/posts`, {
+    method: 'GET',
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

@@ -64,6 +64,7 @@ export const signin = (req, res) => {
       following,
       followers,
     } = user;
+
     res.json({
       token,
       user: {

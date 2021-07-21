@@ -29,7 +29,7 @@ const userSchema = new Schema(
       unique: true,
     },
     password: { type: String, required: [true, 'Email or Password Incorrect'] },
-    profilePic: { type: String, default: '/images/profilePic.png' },
+    profilePic: { type: String, default: '/images/defaultProfilePic.jpg' },
     likes: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     retweets: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
