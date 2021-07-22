@@ -32,53 +32,27 @@ export const signin = (req, res) => {
   }
 
   const { email, password } = req.body;
-  User.findOne({ email }, async (err, user) => {
-    if (err || !user) {
-      return res.status(400).json({
-        error: 'Incorrect Email or Password',
-      });
-    }
+  User.findOne({ email })
+    .select('+password')
+    .exec(async (err, user) => {
+      if (err || !user) {
+        return res.status(400).json({
+          error: 'Incorrect Email or Password',
+        });
+      }
 
-    if (!(await user.matchPassword(password))) {
-      return res.status(401).json({ error: 'Incorrect Email or Password' });
-    }
+      if (!(await user.matchPassword(password))) {
+        return res.status(401).json({ error: 'Incorrect Email or Password' });
+      }
 
-    //create token using user's id
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+      //create token using user's id
+      const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
 
-    //store token in browser cookie
-    res.cookie('token', token, { expire: new Date() + 9999 });
+      //store token in browser cookie
+      res.cookie('token', token, { expire: new Date() + 9999 });
 
-    //sending response to frontend
-    const {
-      _id,
-      firstName,
-      lastName,
-      username,
-      email,
-      profilePic,
-      likes,
-      retweets,
-      following,
-      followers,
-    } = user;
-
-    res.json({
-      token,
-      user: {
-        _id,
-        firstName,
-        lastName,
-        username,
-        email,
-        profilePic,
-        likes,
-        retweets,
-        following,
-        followers,
-      },
+      res.json({ token, user });
     });
-  });
 };
 
 export const signout = (req, res) => {
