@@ -5,8 +5,8 @@ import { isAuthenticated } from '../../helper/auth/index';
 
 export default function PostCard({ post }) {
   const [likes, setLikes] = useState('');
-  const [likeActiveStatus, setLikeActiveStatus] = useState();
-  // const node = useRef('');
+  const [likeActiveStatus, setLikeActiveStatus] = useState('');
+  const [data, setData] = useState(post);
   const { user, token } = isAuthenticated();
 
   const displayName = post.postedBy.firstName + ' ' + post.postedBy.lastName;
@@ -14,26 +14,16 @@ export default function PostCard({ post }) {
 
   const likeHandler = (event) => {
     event.preventDefault();
-    // let bt = document.getElementById('likeButton');
-    // if (post.likeusers.includes(user._id)) {
-    //   bt.classList.remove('active');
-    //   setLikes(post.likeusers.length - 1);
-    // }
 
     likePost(post._id, user._id, token).then((data) => {
+      console.log(data);
+      setData(data);
       setLikes(data.likeusers.length);
       data.likeusers.includes(user._id)
         ? setLikeActiveStatus('active')
         : setLikeActiveStatus('');
     });
   };
-
-  // const handlingRef = () => {
-  //   console.log(node);
-  //   post.likeusers.includes(user._id)
-  //     ? node.current.classList.add('active')
-  //     : node.current.classList.remove('active');
-  // };
 
   return (
     <div className="post">
@@ -68,16 +58,15 @@ export default function PostCard({ post }) {
             </div>
             <div className="postButtonContainer red">
               <button
-                // ref={node}
                 id="likeButton"
                 onClick={likeHandler}
                 className={
-                  (post.likeusers.includes(user._id) ? 'active' : '') ||
+                  (data.likeusers.includes(user._id) ? 'active' : '') ||
                   likeActiveStatus
                 }
               >
                 <i className="far fa-heart"></i>
-                <span>{likes || post.likeusers.length || ''}</span>
+                <span>{likes || data.likeusers.length || ''}</span>
               </button>
             </div>
           </div>
