@@ -63,14 +63,15 @@ export const retweetPost = async (req, res, next) => {
     const postId = req.params.postId;
     const userId = req.params.userId;
 
-    const hasRetweeted = req.profile.retweets && req.profile.retweets.includes(postId);
+    const hasRetweeted =
+      req.profile.retweets && req.profile.retweets.includes(postId);
 
-  let option = hasRetweeted ? '$pull' : '$addToSet';
+    let option = hasRetweeted ? '$pull' : '$addToSet';
 
     //Insert user retweet
-    const updatedUser = await User.findByIdAndUpdate(
+    req.profile = await User.findByIdAndUpdate(
       { _id: userId },
-      { [option] : {retweets : postId} },
+      { [option]: { retweets: postId } },
       { new: true }
     );
 
