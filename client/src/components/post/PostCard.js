@@ -4,8 +4,6 @@ import { likePost, retweetPost } from '../../helper/post/index';
 import { isAuthenticated } from '../../helper/auth/index';
 
 export default function PostCard({ post }) {
-  const [likes, setLikes] = useState('');
-  const [likeActiveStatus, setLikeActiveStatus] = useState('');
   const [data, setData] = useState(post);
   const { user, token } = isAuthenticated();
 
@@ -16,12 +14,7 @@ export default function PostCard({ post }) {
     event.preventDefault();
 
     likePost(post._id, user._id, token).then((data) => {
-      console.log(data);
       setData(data);
-      setLikes(data.likeusers.length);
-      data.likeusers.includes(user._id)
-        ? setLikeActiveStatus('active')
-        : setLikeActiveStatus('');
     });
   };
   const retweetHandler = (event) => {
@@ -60,29 +53,22 @@ export default function PostCard({ post }) {
             </div>
             <div className="postButtonContainer green">
               <button
-                className="retweet"
                 onClick={retweetHandler}
-                style={
-                  data.retweetUsers?.includes(user._id)
-                    ? { color: 'green' }
-                    : { color: '' }
+                className={
+                  data.retweetUsers?.includes(user._id) ? 'active' : ''
                 }
               >
                 <i className="fas fa-retweet"></i>
-                <span>{data.retweetUsers?.length}</span>
+                <span>{data.retweetUsers?.length || ''}</span>
               </button>
             </div>
             <div className="postButtonContainer red">
               <button
-                id="likeButton"
                 onClick={likeHandler}
-                className={
-                  (data?.likeusers?.includes(user._id) ? 'active' : '') ||
-                  likeActiveStatus
-                }
+                className={data?.likeusers?.includes(user._id) ? 'active' : ''}
               >
                 <i className="far fa-heart"></i>
-                <span>{likes || data.likeusers?.length || ''}</span>
+                <span>{data.likeusers?.length || ''}</span>
               </button>
             </div>
           </div>
