@@ -1,10 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import timeDifference from '../../helper/post/timestamp.js';
+import { likePost } from '../../helper/post/index';
+import { isAuthenticated } from '../../helper/auth/index';
 
 export default function PostCard({ post }) {
-  console.log(post);
+  const [likes, setLikes] = useState('');
+  const [likeActiveStatus, setLikeActiveStatus] = useState('');
+  const [data, setData] = useState(post);
+  const { user, token } = isAuthenticated();
+
   const displayName = post.postedBy.firstName + ' ' + post.postedBy.lastName;
   const timestamp = timeDifference(new Date(), new Date(post.createdAt));
+
+  const likeHandler = (event) => {
+    event.preventDefault();
+
+    likePost(post._id, user._id, token).then((data) => {
+      console.log(data);
+      setData(data);
+      setLikes(data.likeusers.length);
+      data.likeusers.includes(user._id)
+        ? setLikeActiveStatus('active')
+        : setLikeActiveStatus('');
+    });
+  };
+
   return (
     <div className="post">
       <div className="mainContentContainer">
@@ -31,14 +51,22 @@ export default function PostCard({ post }) {
                 <i className="far fa-comment"></i>
               </button>
             </div>
-            <div className="postButtonContainer">
-              <button>
+            <div className="postButtonContainer green">
+              <button className="retweet ">
                 <i className="fas fa-retweet"></i>
               </button>
             </div>
-            <div className="postButtonContainer">
-              <button>
+            <div className="postButtonContainer red">
+              <button
+                id="likeButton"
+                onClick={likeHandler}
+                className={
+                  (data.likeusers.includes(user._id) ? 'active' : '') ||
+                  likeActiveStatus
+                }
+              >
                 <i className="far fa-heart"></i>
+                <span>{likes || data.likeusers.length || ''}</span>
               </button>
             </div>
           </div>

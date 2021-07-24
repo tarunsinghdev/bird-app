@@ -9,7 +9,7 @@ export const createPost = (req, res, next) => {
 
   const postData = {
     content: req.body.content,
-    postedBy: req.profile._id, //-> session user
+    postedBy: req.params.userId, //-> session user
   };
 
   Post.create(postData)
@@ -32,4 +32,28 @@ export const getAllPosts = (req, res, next) => {
       console.log('error in getting all posts');
       res.sendStatus(400);
     });
+};
+
+export const likePost = async (req, res, next) => {
+  const userId = req.params.userId; // session user
+  const postId = req.params.postId;
+
+  const isLiked = req.profile.likes && req.profile.likes.includes(postId);
+
+  let option = isLiked ? '$pull' : '$addToSet';
+
+  //Insert user like
+  req.profile = await User.findByIdAndUpdate(
+    userId,
+    { [option]: { likes: postId } },
+    { new: true }
+  ).catch((error) => console.log(error));
+
+  //Insert post like
+  let post = await Post.findByIdAndUpdate(
+    postId,
+    { [option]: { likeusers: userId } },
+    { new: true }
+  ).catch((error) => console.log(error));
+  return res.status(200).send(post);
 };

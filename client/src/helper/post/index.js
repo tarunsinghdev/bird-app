@@ -25,3 +25,18 @@ export const getAllPosts = () => {
     })
     .catch((err) => console.log(err));
 };
+
+export const likePost = (postId, userId, token) => {
+  return fetch(`${API}/post/like/${postId}/${userId}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

@@ -6,6 +6,7 @@
   --greyText: #657786;
   --greyButtonText: rgba(0, 0, 0, 0.34);
   --spacing: 15px;
+  --redLike: rgb(226, 34, 94);
 }
 
 h1 {
@@ -187,4 +188,8 @@ button {
   background-color: var(--buttonHoverBg);
   color: var(--primary-blue);
   border-radius: 50%;
+}
+
+.postButtonContainer.red button.active {
+  color: var(--redLike);
 }
