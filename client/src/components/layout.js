@@ -1,4 +1,5 @@
 import React from 'react';
+import { Badge, Col, Container, Image, ListGroup, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 const Layout = ({ title, children }) => {
   return (
@@ -35,7 +36,88 @@ const Layout = ({ title, children }) => {
           </div>
           {children}
         </div>
-        <div className=" d-none d-md-block col-2 col-lg-4"></div>
+        <div className=" d-none d-lg-block col-4 col-lg-4 mt-5">
+          <Container>
+            <h4>Who to follow</h4>
+          </Container>
+          <ListGroup variant="flush">
+            <ListGroup.Item>
+              <Row>
+                <Col lg={3}>
+                  <Image
+                    src="/images/defaultProfilePic.jpg"
+                    alt="pic"
+                    style={{ width: 50, height: 50 }}
+                    roundedCircle
+                    fluid
+                  />
+                </Col>
+                <Col md={4} lg={5}>
+                  <strong>Tarun Singh</strong>
+                  <p>@thesavvycoder</p>{' '}
+                  <Badge pill bg="secondary">
+                    Follows you
+                  </Badge>
+                </Col>
+                <Col lg={1}>
+                  <div className="buttonContainer">
+                    <button id="submitPostButton">Follow</button>
+                  </div>
+                </Col>
+              </Row>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Row>
+                <Col lg={3}>
+                  <Image
+                    src="/images/defaultProfilePic.jpg"
+                    alt="pic"
+                    style={{ width: 50, height: 50 }}
+                    roundedCircle
+                    fluid
+                  />
+                </Col>
+                <Col md={4} lg={5}>
+                  <strong>Tarun Singh</strong>
+                  <p>@thesavvycoder</p>{' '}
+                  <Badge pill bg="secondary">
+                    Follows you
+                  </Badge>
+                </Col>
+                <Col lg={1}>
+                  <div className="buttonContainer">
+                    <button id="submitPostButton">Follow</button>
+                  </div>
+                </Col>
+              </Row>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Row>
+                <Col lg={3}>
+                  <Image
+                    src="/images/defaultProfilePic.jpg"
+                    alt="pic"
+                    style={{ width: 50, height: 50 }}
+                    roundedCircle
+                    fluid
+                  />
+                </Col>
+                <Col md={4} lg={5}>
+                  <strong>Tarun Singh</strong>
+                  <p>@thesavvycoder</p>{' '}
+                  <Badge pill bg="secondary">
+                    Follows you
+                  </Badge>
+                </Col>
+                <Col lg={1}>
+                  <div className="buttonContainer">
+                    <button id="submitPostButton">Follow</button>
+                  </div>
+                </Col>
+              </Row>
+            </ListGroup.Item>
+          </ListGroup>
+        </div>
       </div>
     </div>
   );
