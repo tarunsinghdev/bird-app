@@ -57,3 +57,40 @@ export const likePost = async (req, res, next) => {
   ).catch((error) => console.log(error));
   return res.status(200).send(post);
 };
+
+export const retweetPost = async (req, res, next) => {
+  try {
+    const postId = req.params.postId;
+    const userId = req.params.userId;
+
+    const hasRetweeted = req.profile.retweets && req.profile.retweets.includes(postId);
+
+  let option = hasRetweeted ? '$pull' : '$addToSet';
+
+    //Insert user retweet
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id: userId },
+      { [option] : {retweets : postId} },
+      { new: true }
+    );
+
+    //Insert post retweet
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      { _id: postId },
+      { [option]: { retweetUsers: userId } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      throw Error('No user found');
+    }
+    if (!updatedPost) {
+      throw Error('No post found');
+    }
+
+    res.status(200).send(updatedPost);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

@@ -3,6 +3,7 @@ import {
   createPost,
   getAllPosts,
   likePost,
+  retweetPost,
 } from '../controllers/postController.js';
 import { getUserById } from '../controllers/userController.js';
 import { isSignIn, isAuthenticated } from '../controllers/authController.js';
@@ -25,6 +26,13 @@ router.put(
   getUserById,
   isAuthenticated,
   likePost
+);
+router.put(
+  '/post/retweet/:postId/:userId',
+  isSignIn,
+  getUserById,
+  isAuthenticated,
+  retweetPost
 );
 
 export default router;

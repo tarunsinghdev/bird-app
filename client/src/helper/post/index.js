@@ -40,3 +40,18 @@ export const likePost = (postId, userId, token) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const retweetPost = (postId, userId, token) => {
+  return fetch(`${API}/post/retweet/${postId}/${userId}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

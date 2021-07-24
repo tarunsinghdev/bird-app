@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import timeDifference from '../../helper/post/timestamp.js';
-import { likePost } from '../../helper/post/index';
+import { likePost, retweetPost } from '../../helper/post/index';
 import { isAuthenticated } from '../../helper/auth/index';
 
 export default function PostCard({ post }) {
@@ -22,6 +22,13 @@ export default function PostCard({ post }) {
       data.likeusers.includes(user._id)
         ? setLikeActiveStatus('active')
         : setLikeActiveStatus('');
+    });
+  };
+  const retweetHandler = (event) => {
+    event.preventDefault();
+
+    retweetPost(post._id, user._id, token).then((data) => {
+      setData(data);
     });
   };
 
@@ -52,8 +59,17 @@ export default function PostCard({ post }) {
               </button>
             </div>
             <div className="postButtonContainer green">
-              <button className="retweet ">
+              <button
+                className="retweet"
+                onClick={retweetHandler}
+                style={
+                  data.retweetUsers?.includes(user._id)
+                    ? { color: 'green' }
+                    : { color: '' }
+                }
+              >
                 <i className="fas fa-retweet"></i>
+                <span>{data.retweetUsers?.length}</span>
               </button>
             </div>
             <div className="postButtonContainer red">
@@ -61,12 +77,12 @@ export default function PostCard({ post }) {
                 id="likeButton"
                 onClick={likeHandler}
                 className={
-                  (data.likeusers.includes(user._id) ? 'active' : '') ||
+                  (data?.likeusers?.includes(user._id) ? 'active' : '') ||
                   likeActiveStatus
                 }
               >
                 <i className="far fa-heart"></i>
-                <span>{likes || data.likeusers.length || ''}</span>
+                <span>{likes || data.likeusers?.length || ''}</span>
               </button>
             </div>
           </div>
