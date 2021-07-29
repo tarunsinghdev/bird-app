@@ -6,3 +6,365 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+:root {
+  --primary-blue: #1fa2f1;
+  --primary-blue-light: #9bd1f9;
+  --buttonHoverBg: #d4edff;
+  --borderLightGrey: #e6ecf0;
+  --greyText: #657786;
+  --greyButtonText: rgba(0, 0, 0, 0.34);
+  --spacing: 15px;
+  --redLike: rgb(226, 34, 94);
+  --redBackground: rgba(226, 34, 94, 0.1);
+  --greenRetweet: rgb(23, 191, 99);
+  --greenBackground: rgba(23, 191, 99, 0.1);
+  --redDelete: rgb(224, 36, 94);
+}
+
+h1 {
+  font-size: 19px;
+  font-weight: 800;
+  margin: 0px;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  color: inherit;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  height: 100%;
+}
+
+nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-size: 30px;
+  width: 55px;
+  height: 55px;
+  text-decoration: none;
+  color: #212529;
+}
+
+nav a:hover {
+  background-color: var(--buttonHoverBg);
+  color: var(--primary-blue);
+  border-radius: 50%;
+}
+
+nav a.blue {
+  color: var(--primary-blue);
+}
+
+div .logo {
+  width: 50px;
+  height: 50px;
+}
+
+div .logo img {
+  width: 100%;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  color: var(--greyButtonText);
+}
+
+.mainSectionContainers {
+  padding: 0;
+  border-left: 1px solid var(--borderLightGrey);
+  border-right: 1px solid var(--borderLightGrey);
+}
+
+.titleContainer {
+  height: 53px;
+  padding: 0 var(--spacing);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--borderLightGrey);
+  flex-shrink: 0;
+}
+
+.titleContainer h1 {
+  flex: 1;
+}
+
+.postFormContainer {
+  display: flex;
+  padding: var(--spacing);
+  border-bottom: 10px solid var(--borderLightGrey);
+  flex-shrink: 0;
+}
+
+.userImageContainer {
+  width: 50px;
+  height: 50px;
+}
+
+.userImageContainer img {
+  width: 100%;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.textareaContainer {
+  flex: 1;
+  padding-left: var(--spacing);
+}
+.textareaContainer textarea {
+  width: 100%;
+  border: none;
+  resize: none;
+  outline: none;
+  font-size: 19px;
+  /* min-height: 120px; */
+}
+#submitPostButton {
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 7px 15px;
+}
+
+#submitPostButton:disabled {
+  background-color: var(--primary-blue-light);
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing);
+  cursor: pointer;
+  border-bottom: 1px solid var(--borderLightGrey);
+  flex-shrink: 0;
+}
+
+.mainContentContainer {
+  flex: 1;
+  display: flex;
+}
+
+.postContentContainer {
+  padding-left: var(--spacing);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.displayName {
+  font-weight: bold;
+}
+.username {
+  color: var(--greyText);
+}
+.date {
+  color: var(--greyText);
+}
+
+.postFooter {
+  display: flex;
+  align-items: center;
+}
+
+.postFooter .postButtonContainer {
+  flex: 1;
+  display: flex;
+}
+
+.postFooter .postButtonContainer button {
+  padding: 0 5px;
+}
+
+.postheader a {
+  text-decoration: none;
+}
+.postheader a:hover {
+  text-decoration: underline;
+}
+
+.postheader a,
+.postheader span {
+  padding-right: 5px;
+}
+
+.postButtonContainer button:hover {
+  background-color: var(--buttonHoverBg);
+  color: var(--primary-blue);
+  border-radius: 50%;
+}
+
+.postButtonContainer.red button.active {
+  color: var(--redLike);
+}
+
+.postButtonContainer.red button:hover {
+  color: var(--redLike);
+  background-color: var(--redBackground);
+}
+
+.postButtonContainer.green button.active {
+  color: var(--greenRetweet);
+}
+
+.postButtonContainer.green button:hover {
+  color: var(--greenRetweet);
+  background-color: var(--greenBackground);
+}
+
+.retweetContainer {
+  padding-left: 35px;
+  font-size: 13px;
+  color: var(--greyText);
+  margin-bottom: 5px;
+}
+
+.retweetContainer a {
+  text-decoration: none;
+}
+.retweetContainer a:hover {
+  text-decoration: underline;
+}
+
+.modal .postFormContainer {
+  border: none;
+  padding: 0;
+  padding-top: var(--spacing);
+}
+
+/*reply mid styling*/
+.replyContainer {
+  display: flex;
+}
+
+.replyVerticalLineContainer {
+  display: flex;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.replyVerticalLine {
+  align-items: center;
+  border-left: 3px solid var(--borderLightGrey);
+  height: 50px;
+}
+
+.replyHeader {
+  color: var(--greyText);
+  padding-top: 15px;
+  padding-left: 10px;
+}
+
+.replyHeader span {
+  color: var(--primary-blue);
+}
+
+.replyFlag {
+  margin-bottom: 5px;
+  color: var(--greyText);
+}
+
+.replyFlag a {
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
+.replyFlag a:hover {
+  text-decoration: underline;
+}
+
+.post.largeFont .postBody,
+.post.largeFont .postFooter {
+  font-size: 23px;
+}
+
+.postContentContainer .postheader {
+  display: flex;
+}
+.postContentContainer .postheader .date {
+  flex: 1;
+}
+
+#deleteModal .modal-content {
+  border-radius: 16px;
+  /* align-items: center; */
+}
+
+.deleteModalHead {
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.deleteModalBody {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.deleteModalText {
+  color: var(--greyText);
+  text-align: center;
+}
+
+#deleteTweetButton {
+  border-radius: 24px;
+  background-color: var(--redDelete);
+  border-color: transparent;
+  font-weight: 700;
+  padding: 8px 35px;
+}
+
+#cancelDeleteButton {
+  border-radius: 24px;
+  background-color: var(--borderLightGrey);
+  color: black;
+  border-color: transparent;
+  font-weight: 700;
+  padding: 8px 35px;
+}
+
+.deleteModalFooter {
+  justify-content: space-around;
+}
+
+.dropdownItem a:hover {
+  text-decoration: none;
+}
+
+.followSuggestion {
+  background-color: rgb(247, 249, 249);
+  border-radius: 16px;
+  padding: var(--spacing);
+  margin: 0px 36px 20px 24px;
+}
+
+.followSuggestionHeader {
+  border-bottom: 1px solid var(--borderLightGrey);
+}
+
+.followSuggestionHeader h2 {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.followUsernameContainer {
+  flex: 1;
+  display: flex;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--borderLightGrey);
+}
+
+.midFollowContainer {
+  padding: 0 var(--spacing);
+}
