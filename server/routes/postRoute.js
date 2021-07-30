@@ -2,8 +2,10 @@ import express from 'express';
 import {
   createPost,
   getAllPosts,
+  getPostById,
   likePost,
   retweetPost,
+  deletePost,
 } from '../controllers/postController.js';
 import { getUserById } from '../controllers/userController.js';
 import { isSignIn, isAuthenticated } from '../controllers/authController.js';
@@ -27,12 +29,17 @@ router.put(
   isAuthenticated,
   likePost
 );
-router.put(
+
+router.post(
   '/post/retweet/:postId/:userId',
   isSignIn,
   getUserById,
   isAuthenticated,
   retweetPost
 );
+
+router.get('/post/:postId', getPostById);
+
+router.delete('/post/delete/:postId/:userId', deletePost);
 
 export default router;

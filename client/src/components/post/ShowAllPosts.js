@@ -22,7 +22,7 @@ export default function ShowAllPosts() {
   return (
     <div>
       {posts.map((post, index) => {
-        return <PostCard key={index} post={post}></PostCard>;
+        return <PostCard key={post._id} post={post}></PostCard>;
       })}
     </div>
   );

@@ -12,6 +12,10 @@ export const createPost = (req, res, next) => {
     postedBy: req.params.userId, //-> session user
   };
 
+  if (req.body.replyTo) {
+    postData.replyTo = req.body.replyTo;
+  }
+
   Post.create(postData)
     .then(async (newPost) => {
       newPost = await User.populate(newPost, { path: 'postedBy' });
@@ -23,11 +27,17 @@ export const createPost = (req, res, next) => {
     });
 };
 
-export const getAllPosts = (req, res, next) => {
+export const getAllPosts = async (req, res, next) => {
   Post.find()
     .populate('postedBy')
+    .populate('retweetData')
+    .populate('replyTo')
     .sort({ createdAt: -1 })
-    .then((results) => res.status(200).send(results))
+    .then(async (results) => {
+      results = await User.populate(results, { path: 'replyTo.postedBy' });
+      results = await User.populate(results, { path: 'retweetData.postedBy' });
+      res.status(200).send(results);
+    })
     .catch((error) => {
       console.log('error in getting all posts');
       res.sendStatus(400);
@@ -59,39 +69,72 @@ export const likePost = async (req, res, next) => {
 };
 
 export const retweetPost = async (req, res, next) => {
-  try {
-    const postId = req.params.postId;
-    const userId = req.params.userId;
+  const postId = req.params.postId;
+  const userId = req.params.userId;
 
-    const hasRetweeted =
-      req.profile.retweets && req.profile.retweets.includes(postId);
+  const deletedPost = await Post.findOneAndDelete({
+    postedBy: userId,
+    retweetData: postId,
+  }).catch((error) => console.log(error));
 
-    let option = hasRetweeted ? '$pull' : '$addToSet';
+  let option = deletedPost != null ? '$pull' : '$addToSet';
 
-    //Insert user retweet
-    req.profile = await User.findByIdAndUpdate(
-      { _id: userId },
-      { [option]: { retweets: postId } },
-      { new: true }
-    );
+  let repost = deletedPost;
 
-    //Insert post retweet
-
-    const updatedPost = await Post.findByIdAndUpdate(
-      { _id: postId },
-      { [option]: { retweetUsers: userId } },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      throw Error('No user found');
-    }
-    if (!updatedPost) {
-      throw Error('No post found');
-    }
-
-    res.status(200).send(updatedPost);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  if (repost == null) {
+    repost = await Post.create({
+      postedBy: userId,
+      retweetData: postId,
+    }).catch((error) => console.log(error));
   }
+
+  //Insert user retweet
+  req.profile = await User.findByIdAndUpdate(
+    { _id: userId },
+    { [option]: { retweets: repost._id } },
+    { new: true }
+  ).catch((error) => console.log(error));
+
+  //Insert post retweet
+  const updatedPost = await Post.findByIdAndUpdate(
+    { _id: postId },
+    { [option]: { retweetUsers: userId } },
+    { new: true }
+  ).catch((error) => console.log(error));
+
+  res.status(200).send(updatedPost);
+};
+
+export const getPostById = async (req, res, next) => {
+  let postData = await getPosts({ _id: req.params.postId });
+  postData = postData[0];
+
+  let results = {
+    postData: postData,
+  };
+  if (postData.replyTo !== undefined) {
+    results.replyTo = postData.replyTo;
+  }
+
+  results.replies = await getPosts({ replyTo: req.params.postId });
+
+  res.status(200).send(results);
+};
+
+async function getPosts(filter) {
+  let results = await Post.find(filter)
+    .populate('postedBy')
+    .populate('retweetData')
+    .populate('replyTo')
+    .sort({ createdAt: -1 })
+    .catch((error) => console.log(error));
+
+  results = await User.populate(results, { path: 'replyTo.postedBy' });
+  return await User.populate(results, { path: 'retweetData.postedBy' });
+}
+
+export const deletePost = async (req, res, next) => {
+  Post.findByIdAndDelete(req.params.postId)
+    .then(() => res.sendStatus(202))
+    .catch((error) => console.log(error));
 };
