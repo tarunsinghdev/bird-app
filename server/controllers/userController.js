@@ -9,10 +9,15 @@ export const followUser = async (req, res, next) => {
       { following },
       { new: true, runValidator: true }
     );
+    const otherUser = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $addToSet: { followers: req.user._id } },
+      { new: true, runValidators: true }
+    );
     if (!user) {
       throw Error('Something went wrong.');
     }
-    res.status(200).json({ status: 'sucess', data: { user } });
+    res.status(200).json({ status: 'sucess', data: { user, otherUser } });
   } catch (error) {
     res.status(400).json({ status: 'fail', message: error.message });
   }
@@ -29,10 +34,17 @@ export const unfollowUser = async (req, res, next) => {
       { following: updatedFollowing },
       { new: true, runValidator: true }
     );
+    const otherUser = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $pull: { followers: req.user._id } },
+      { new: true, runValidators: true }
+    );
+    
+    const 
     if (!user) {
       throw Error('Something went wrong.');
     }
-    res.status(200).json({ status: 'sucess', data: { user } });
+    res.status(200).json({ status: 'sucess', data: { user, otherUser } });
   } catch (error) {
     res.status(400).json({ status: 'fail', message: error.message });
   }
