@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useRouteMatch,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import PrivateRoute from './helper/auth/privateRoute.js';
 
 import LandingScreen from './screens/LandingScreen';

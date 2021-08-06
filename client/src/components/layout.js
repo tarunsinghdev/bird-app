@@ -1,6 +1,6 @@
 import React from 'react';
-import { Badge, Col, Container, Image, ListGroup, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+
 const Layout = ({ title, children }) => {
   return (
     <div className="wrapper">
@@ -11,24 +11,24 @@ const Layout = ({ title, children }) => {
               <img src="/images/twitter.png" alt="logo" />
             </Link>
           </div>
-          <Link to="/home">
+          <NavLink activeStyle={{ color: '#1fa2f1' }} to="/home">
             <i className="fas fa-home"></i>
-          </Link>
-          <Link to="/search">
+          </NavLink>
+          <NavLink activeStyle={{ color: '#1fa2f1' }} to="/search">
             <i className="fas fa-search"></i>
-          </Link>
-          <Link to="/notifications">
+          </NavLink>
+          <NavLink activeStyle={{ color: '#1fa2f1' }} to="/notifications">
             <i className="fas fa-bell"></i>
-          </Link>
-          <Link to="/messages">
+          </NavLink>
+          <NavLink activeStyle={{ color: '#1fa2f1' }} to="/messages">
             <i className="fas fa-envelope"></i>
-          </Link>
-          <Link to="/profile">
+          </NavLink>
+          <NavLink activeStyle={{ color: '#1fa2f1' }} to="/profile">
             <i className="fas fa-user"></i>
-          </Link>
-          <Link to="/signout">
+          </NavLink>
+          <NavLink activeStyle={{ color: '#1fa2f1' }} to="/signout">
             <i className="fas fa-sign-out-alt"></i>
-          </Link>
+          </NavLink>
         </nav>
         <div className="mainSectionContainers col-10 col-md-8 col-lg-5">
           <div className="titleContainer">

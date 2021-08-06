@@ -51,8 +51,7 @@ export default function PostCard({ post, largeFont = false }) {
     });
   };
 
-  const handleClose = (event) => {
-    event.stopPropagation();
+  const handleClose = () => {
     setShow(false);
     setContent('');
   };
@@ -243,94 +242,99 @@ export default function PostCard({ post, largeFont = false }) {
   ));
 
   return (
-    <div /*onClick={redirectPostpage}*/ className={`${largeFontClass} post`}>
-      {isRetweet ? (
-        <div className="retweetContainer">
-          <span>
-            <i className="fas fa-retweet"> </i>
-            &nbsp; Retweeted by{' '}
-            <a href={/profile/ + retweetedBy}>@{retweetedBy}</a>
-          </span>
-        </div>
-      ) : (
-        ''
-      )}
-      {replyModal()}
-      {deleteModal()}
-      <div className="mainContentContainer">
-        <div className="userImageContainer">
-          <img src={post?.postedBy.profilePic} alt="user pic" />
-        </div>
-        <div className="postContentContainer">
-          <div className="postheader">
-            <a
-              className="displayName"
-              href={/profile/ + post?.postedBy.username}
-            >
-              {displayName}
-            </a>
-            <span className="username">@{post?.postedBy.username}</span>
-            <span className="date">{timestamp}</span>
+    <>
+      {show && replyModal()}
+      {deleteShow && deleteModal()}
+      <div onClick={redirectPostpage} className={`${largeFontClass} post`}>
+        {isRetweet ? (
+          <div className="retweetContainer">
+            <span>
+              <i className="fas fa-retweet"> </i>
+              &nbsp; Retweeted by{' '}
+              <a href={/profile/ + retweetedBy}>@{retweetedBy}</a>
+            </span>
+          </div>
+        ) : (
+          ''
+        )}
 
-            {post.postedBy._id === user._id && (
-              <Dropdown>
-                <Dropdown.Toggle as={CustomToggle}></Dropdown.Toggle>
+        <div className="mainContentContainer">
+          <div className="userImageContainer">
+            <img src={post?.postedBy.profilePic} alt="user pic" />
+          </div>
+          <div className="postContentContainer">
+            <div className="postheader">
+              <a
+                className="displayName"
+                href={/profile/ + post?.postedBy.username}
+              >
+                {displayName}
+              </a>
+              <span className="username">@{post?.postedBy.username}</span>
+              <span className="date">{timestamp}</span>
 
-                <Dropdown.Menu className="dropdownItem">
-                  <Dropdown.Item
-                    style={{ color: '#e0245e' }}
-                    onClick={handleDeleteShow}
-                  >
-                    <i className="far fa-trash-alt"></i> &nbsp;Delete
-                  </Dropdown.Item>
-                  <Dropdown.Item href="/action-2">
-                    <i className="fas fa-thumbtack"></i> &nbsp;Pin to your
-                    Profile
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              {post.postedBy._id === user._id && (
+                <Dropdown>
+                  <Dropdown.Toggle as={CustomToggle}></Dropdown.Toggle>
+
+                  <Dropdown.Menu className="dropdownItem">
+                    <Dropdown.Item
+                      style={{ color: '#e0245e' }}
+                      onClick={handleDeleteShow}
+                    >
+                      <i className="far fa-trash-alt"></i> &nbsp;Delete
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/action-2">
+                      <i className="fas fa-thumbtack"></i> &nbsp;Pin to your
+                      Profile
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
+            </div>
+            {isReply ? (
+              <div className="replyFlag">
+                Replying to{' '}
+                <a href={/profile/ + replyToUsername}>@{replyToUsername}</a>
+              </div>
+            ) : (
+              ''
             )}
-          </div>
-          {isReply ? (
-            <div className="replyFlag">
-              Replying to{' '}
-              <a href={/profile/ + replyToUsername}>@{replyToUsername}</a>
+            <div className="postBody">
+              <span>{post?.content}</span>
             </div>
-          ) : (
-            ''
-          )}
-          <div className="postBody">
-            <span>{post?.content}</span>
-          </div>
-          <div className="postFooter">
-            <div className="postButtonContainer">
-              <button onClick={handleShow}>
-                <i className="far fa-comment"></i>
-              </button>
-            </div>
-            <div className="postButtonContainer green">
-              <button
-                onClick={retweetHandler}
-                className={
-                  data?.retweetUsers?.includes(user._id) ? 'active' : ''
-                }
-              >
-                <i className="fas fa-retweet"></i>
-                <span>{data?.retweetUsers?.length || ''}</span>
-              </button>
-            </div>
-            <div className="postButtonContainer red">
-              <button
-                onClick={likeHandler}
-                className={data?.likeusers?.includes(user._id) ? 'active' : ''}
-              >
-                <i className="far fa-heart"></i>
-                <span>{data?.likeusers?.length || ''}</span>
-              </button>
+            <div className="postFooter">
+              <div className="postButtonContainer">
+                <button onClick={handleShow}>
+                  <i className="far fa-comment"></i>
+                </button>
+              </div>
+              <div className="postButtonContainer green">
+                <button
+                  onClick={retweetHandler}
+                  className={
+                    data?.retweetUsers?.includes(user._id) ? 'active' : ''
+                  }
+                >
+                  <i className="fas fa-retweet"></i>
+                  <span>{data?.retweetUsers?.length || ''}</span>
+                </button>
+              </div>
+              <div className="postButtonContainer red">
+                <button
+                  onClick={likeHandler}
+                  className={
+                    data?.likeusers?.includes(user._id) ? 'active' : ''
+                  }
+                >
+                  <i className="far fa-heart"></i>
+                  <span>{data?.likeusers?.length || ''}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
