@@ -17,7 +17,7 @@ export const followUser = async (req, res, next) => {
     if (!user) {
       throw Error('Something went wrong.');
     }
-    res.status(200).json({ status: 'sucess', data: { user, otherUser } });
+    res.status(200).json({ status: 'success', data: { user, otherUser } });
   } catch (error) {
     res.status(400).json({ status: 'fail', message: error.message });
   }
@@ -39,12 +39,11 @@ export const unfollowUser = async (req, res, next) => {
       { $pull: { followers: req.user._id } },
       { new: true, runValidators: true }
     );
-    
-    const 
+
     if (!user) {
       throw Error('Something went wrong.');
     }
-    res.status(200).json({ status: 'sucess', data: { user, otherUser } });
+    res.status(200).json({ status: 'success', data: { user, otherUser } });
   } catch (error) {
     res.status(400).json({ status: 'fail', message: error.message });
   }

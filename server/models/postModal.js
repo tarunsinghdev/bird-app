@@ -24,7 +24,7 @@ const postSchema = new Schema(
       retweets: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 const Post = mongoose.model('Post', postSchema);
