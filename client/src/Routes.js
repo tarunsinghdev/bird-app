@@ -6,9 +6,10 @@ import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
 import Home from './screens/HomeScreen';
 import Notification from './screens/NotificationScreen';
-import NotFound from './screens/NotFound';
+// import NotFound from './screens/NotFound';
 import PostScreen from './screens/PostScreen';
 import { ToastContainer } from 'react-toastify';
+import NotFound1 from './screens/NotFound1';
 
 const App = () => {
   return (
@@ -21,7 +22,7 @@ const App = () => {
         <PrivateRoute path="/home" component={Home} />
         <PrivateRoute path="/notifications" component={Notification} />
         <PrivateRoute path={`/post/:postId`} component={PostScreen} />
-        <Route component={NotFound} />
+        <Route component={NotFound1} />
       </Switch>
     </Router>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/layout';
 
-export default function NotFound() {
+export default function NotFound1() {
   return (
     <Layout title="Home">
       <h1>404 page</h1>

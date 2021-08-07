@@ -30,7 +30,10 @@ const Layout = ({ title, children }) => {
             <i className="fas fa-sign-out-alt"></i>
           </NavLink>
         </nav>
-        <div className="mainSectionContainers col-10 col-md-8 col-lg-5">
+        <div
+          style={{ height: '100vh' }}
+          className="mainSectionContainers col-10 col-md-8 col-lg-5"
+        >
           <div className="titleContainer">
             <h1>{title}</h1>
           </div>
