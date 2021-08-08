@@ -60,8 +60,8 @@ body {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #fff;
-  background-color: #222;
+  color: black;
+  background-color: #fff;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
@@ -4274,7 +4274,7 @@ fieldset:disabled .btn {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #303030;
+  background-color: white;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
@@ -4325,7 +4325,7 @@ fieldset:disabled .btn {
 .card-header {
   padding: 0.5rem 1rem;
   margin-bottom: 0;
-  background-color: #444;
+  background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 .card-header:first-child {
@@ -4646,7 +4646,7 @@ fieldset:disabled .btn {
   font-size: 0.75em;
   font-weight: 700;
   line-height: 1;
-  color: #fff;
+  color: rgb(46, 46, 46);
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
@@ -4826,28 +4826,28 @@ fieldset:disabled .btn {
 }
 .list-group-item-action {
   width: 100%;
-  color: #444;
+  color: rgb(255, 255, 255);
   text-align: inherit;
 }
 .list-group-item-action:focus,
 .list-group-item-action:hover {
   z-index: 1;
-  color: #fff;
+  color: #444;
   text-decoration: none;
-  background-color: #444;
+  background-color: rgb(255, 255, 255);
 }
 .list-group-item-action:active {
-  color: #fff;
-  background-color: #222;
+  color: #222;
+  background-color: #fff;
 }
 .list-group-item {
   position: relative;
   display: block;
   padding: 0.5rem 1rem;
-  color: #fff;
+  color: rgb(0, 0, 0);
   text-decoration: none;
-  background-color: #303030;
-  border: 1px solid #444;
+  background-color: #ffffff;
+  /* border: 1px solid #444; */
 }
 .list-group-item:first-child {
   border-top-left-radius: inherit;
@@ -4861,7 +4861,7 @@ fieldset:disabled .btn {
 .list-group-item:disabled {
   color: #888;
   pointer-events: none;
-  background-color: #303030;
+  background-color: #ffffff;
 }
 .list-group-item.active {
   z-index: 2;

@@ -9,7 +9,8 @@
     "server": "nodemon server",
     "client": "npm start --prefix client",
     "data:import": "node server/seeder",
-    "data:destroy": "node server/seeder -d"
+    "data:destroy": "node server/seeder -d",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,7 @@
     "twitter",
     "clone"
   ],
-  "author": "Tarun Singh & Yogesh Yadav",
+  "author": "Tarun Singh",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/tarunsinghdev/bird-app/issues"
@@ -35,7 +36,9 @@
   },
   "devDependencies": {
     "colors": "^1.4.0",
+    "concurrently": "^6.2.0",
     "dotenv": "^10.0.0",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.12"
   }
 }
